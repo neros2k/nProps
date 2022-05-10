@@ -1,0 +1,8 @@
+name: nProps
+version: '${project.version}'
+main: n2k_.nprops.nProps
+api-version: 1.17
+depend: [JSONConfigAPI]
+softdepend: [PlaceholderAPI]
+authors: [n2k_]
+website: github.com/neros2k/nProps

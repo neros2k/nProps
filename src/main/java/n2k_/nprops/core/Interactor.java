@@ -5,7 +5,9 @@ import n2k_.nprops.base.IInteractor;
 import n2k_.nprops.base.IRepository;
 import n2k_.nprops.core.presenter.CommandPresenter;
 import n2k_.nprops.core.presenter.EventPresenter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -43,9 +45,6 @@ public class Interactor implements IInteractor {
             List<Location> LOCATION_LIST = this.REPOSITORY.getByName(NAME);
             if(!LOCATION_LIST.isEmpty()) LOCATION_LIST.forEach(ENGINE::add);
             this.ENGINE_LIST.put(NAME, ENGINE);
-        } else {
-            IEngine ENGINE = this.ENGINE_LIST.get(NAME);
-            ENGINE.start();
         }
     }
     @Override
@@ -55,12 +54,39 @@ public class Interactor implements IInteractor {
             IEngine ENGINE = this.ENGINE_LIST.get(NAME);
             ENGINE.clear();
             ENGINE.stop();
+            this.ENGINE_LIST.remove(NAME);
+        }
+    }
+    @Override
+    public void addBlock(@NotNull Player PLAYER, Block BLOCK) {
+        String NAME = PLAYER.getName();
+        if(this.ENGINE_LIST.containsKey(NAME)) {
+            IEngine ENGINE = this.ENGINE_LIST.get(NAME);
+            if(ENGINE.getList().size() > 10) {
+                ENGINE.getPLayer().sendMessage("ЭЙ чувачок ОСТАНОВИСЬ!!");
+            } else {
+                ENGINE.add(BLOCK.getLocation());
+            }
+        }
+    }
+    @Override
+    public void removeBlock(@NotNull Player PLAYER, Block BLOCK) {
+        String NAME = PLAYER.getName();
+        if(this.ENGINE_LIST.containsKey(NAME)) {
+            IEngine ENGINE = this.ENGINE_LIST.get(NAME);
+            if(ENGINE.getList().isEmpty()) {
+                Bukkit.getLogger().warning("[!] Line: 78 | Removing block from empty list");
+            } else {
+                ENGINE.remove(BLOCK.getLocation());
+            }
         }
     }
     @Override
     public void clear(@NotNull Player PLAYER) {
-        IEngine ENGINE = this.ENGINE_LIST.getOrDefault(PLAYER.getName(), null);
-        if(ENGINE != null) ENGINE.clear();
+        String NAME = PLAYER.getName();
+        if(this.ENGINE_LIST.containsKey(NAME)) {
+            this.ENGINE_LIST.get(NAME).clear();
+        }
     }
     @Override
     public IEngine getEngine(@NotNull Player PLAYER) {

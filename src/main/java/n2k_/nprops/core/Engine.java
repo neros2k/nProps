@@ -1,5 +1,4 @@
 package n2k_.nprops.core;
-import com.sun.istack.internal.Nullable;
 import n2k_.nprops.base.IEngine;
 import n2k_.nprops.base.IInteractor;
 import net.md_5.bungee.api.ChatMessageType;
@@ -10,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 public class Engine implements IEngine {
@@ -54,7 +54,7 @@ public class Engine implements IEngine {
     }
     @Override
     public List<Location> getList() {
-        return null;
+        return this.LOCATION_LIST;
     }
     @Override
     public Player getPLayer() {

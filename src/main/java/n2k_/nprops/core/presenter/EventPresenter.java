@@ -1,6 +1,8 @@
 package n2k_.nprops.core.presenter;
 import n2k_.nprops.base.APresenter;
 import n2k_.nprops.base.IInteractor;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -33,8 +35,11 @@ public class EventPresenter extends APresenter implements Listener {
     }
     @EventHandler
     public void onBlockBreak(@NotNull BlockBreakEvent EVENT) {
-        if(EVENT.isCancelled()) return;
-        super.getInteractor().removeBlock(EVENT.getPlayer(), EVENT.getBlock());
+        Block BLOCK = EVENT.getBlock();
+        Location LOCATION = BLOCK.getLocation();
+        if(!EVENT.isCancelled() && super.getInteractor().getEngineFromLocation(LOCATION) != null) {
+            super.getInteractor().removeBlock(EVENT.getPlayer(), EVENT.getBlock());
+        }
     }
 }
 

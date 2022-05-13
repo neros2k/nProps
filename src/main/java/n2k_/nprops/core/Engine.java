@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 public class Engine implements IEngine {
     private final IInteractor INTERACTOR;
-    private final Player PLAYER;
     private final List<Location> LOCATION_LIST;
+    private Player PLAYER;
     private BukkitTask TICK_TASK;
     public Engine(IInteractor INTERACTOR, Player PLAYER) {
         this.INTERACTOR = INTERACTOR;
@@ -52,6 +52,10 @@ public class Engine implements IEngine {
     @Override
     public void clear() {
         this.LOCATION_LIST.forEach(LOCATION -> LOCATION.getBlock().setType(Material.AIR));
+    }
+    @Override
+    public void setPlayer(Player PLAYER) {
+        this.PLAYER = PLAYER;
     }
     @Override
     public List<Location> getList() {

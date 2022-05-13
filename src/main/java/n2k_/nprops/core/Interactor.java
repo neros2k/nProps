@@ -39,6 +39,9 @@ public class Interactor implements IInteractor {
             IEngine ENGINE = new Engine(this, PLAYER);
             this.ENGINE_LIST.put(NAME, ENGINE);
             ENGINE.start();
+        } else {
+            IEngine ENGINE = this.getEngine(PLAYER);
+            ENGINE.setPlayer(PLAYER);
         }
     }
     @Override
@@ -46,9 +49,13 @@ public class Interactor implements IInteractor {
         String NAME = PLAYER.getName();
         if(this.ENGINE_LIST.containsKey(NAME)) {
             IEngine ENGINE = this.ENGINE_LIST.get(NAME);
-            this.ENGINE_LIST.remove(NAME);
-            ENGINE.clear();
-            ENGINE.stop();
+            Bukkit.getScheduler().runTaskLater(this.getPlugin(), () -> {
+                if(!PLAYER.isOnline()) {
+                    this.ENGINE_LIST.remove(NAME);
+                    ENGINE.clear();
+                    ENGINE.stop();
+                }
+            }, 100L);
         }
     }
     @Override
@@ -75,8 +82,7 @@ public class Interactor implements IInteractor {
     public void clear(@NotNull Player PLAYER) {
         String NAME = PLAYER.getName();
         if(this.ENGINE_LIST.containsKey(NAME)) {
-            Bukkit.getScheduler().runTaskLater(this.PLUGIN,
-                    () -> this.ENGINE_LIST.get(NAME).clear(), 100L);
+            this.ENGINE_LIST.get(NAME).clear();
         }
     }
     @Override

@@ -9,6 +9,7 @@ public interface IEngine {
     void add(Location LOCATION);
     void remove(Location LOCATION);
     void clear();
+    void setPlayer(Player PLAYER);
     List<Location> getList();
     Player getPLayer();
 }

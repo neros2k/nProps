@@ -11,7 +11,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
+import java.util.Objects;
 public class Engine implements IEngine {
     private final IInteractor INTERACTOR;
     private final Player PLAYER;
@@ -24,7 +26,7 @@ public class Engine implements IEngine {
     }
     @Override
     public void start() {
-        this.TICK_TASK = Bukkit.getScheduler().runTaskTimer(this.INTERACTOR.getPlugin(), this::tick, 0L, 5L);
+        this.TICK_TASK = Bukkit.getScheduler().runTaskTimer(this.INTERACTOR.getPlugin(), this::tick, 0L, 1L);
     }
     @Override
     public void stop() {
@@ -32,16 +34,12 @@ public class Engine implements IEngine {
     }
     @Override
     public void tick() {
+        this.LOCATION_LIST.removeIf(LOCATION -> LOCATION.getBlock().isEmpty());
         @Nullable Block BLOCK = this.PLAYER.getTargetBlockExact(3);
         if(BLOCK == null) return;
         @Nullable IEngine ENGINE = this.INTERACTOR.getEngineFromLocation(BLOCK.getLocation());
         if(ENGINE == null) return;
         this.PLAYER.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ENGINE.getPLayer().getName()));
-        this.LOCATION_LIST.forEach(LOCATION -> {
-            if(LOCATION.getBlock().getType().isAir()) {
-                this.LOCATION_LIST.remove(LOCATION);
-            }
-        });
     }
     @Override
     public void add(Location LOCATION) {

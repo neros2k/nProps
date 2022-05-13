@@ -2,7 +2,6 @@ package n2k_.nprops.core;
 import n2k_.nprops.base.APresenter;
 import n2k_.nprops.base.IEngine;
 import n2k_.nprops.base.IInteractor;
-import n2k_.nprops.base.IRepository;
 import n2k_.nprops.core.presenter.CommandPresenter;
 import n2k_.nprops.core.presenter.EventPresenter;
 import org.bukkit.Bukkit;
@@ -17,12 +16,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 public class Interactor implements IInteractor {
-    private final IRepository REPOSITORY;
     private final List<APresenter> PRESENTER_LIST;
     private final Map<String, IEngine> ENGINE_LIST;
     private final JavaPlugin PLUGIN;
     public Interactor(JavaPlugin PLUGIN) {
-        this.REPOSITORY = new Repository(this);
         this.PRESENTER_LIST = new ArrayList<>();
         this.ENGINE_LIST = new HashMap<>();
         this.PLUGIN = PLUGIN;
@@ -33,7 +30,6 @@ public class Interactor implements IInteractor {
     }
     @Override
     public void init() {
-        this.REPOSITORY.init();
         this.PRESENTER_LIST.forEach(APresenter::init);
     }
     @Override
@@ -41,10 +37,8 @@ public class Interactor implements IInteractor {
         String NAME = PLAYER.getName();
         if(!this.ENGINE_LIST.containsKey(NAME)) {
             IEngine ENGINE = new Engine(this, PLAYER);
-            ENGINE.start();
-            List<Location> LOCATION_LIST = this.REPOSITORY.getByName(NAME);
-            if(!LOCATION_LIST.isEmpty()) LOCATION_LIST.forEach(ENGINE::add);
             this.ENGINE_LIST.put(NAME, ENGINE);
+            ENGINE.start();
         }
     }
     @Override
@@ -52,9 +46,9 @@ public class Interactor implements IInteractor {
         String NAME = PLAYER.getName();
         if(this.ENGINE_LIST.containsKey(NAME)) {
             IEngine ENGINE = this.ENGINE_LIST.get(NAME);
+            this.ENGINE_LIST.remove(NAME);
             ENGINE.clear();
             ENGINE.stop();
-            this.ENGINE_LIST.remove(NAME);
         }
     }
     @Override

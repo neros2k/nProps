@@ -75,7 +75,8 @@ public class Interactor implements IInteractor {
     public void clear(@NotNull Player PLAYER) {
         String NAME = PLAYER.getName();
         if(this.ENGINE_LIST.containsKey(NAME)) {
-            this.ENGINE_LIST.get(NAME).clear();
+            Bukkit.getScheduler().runTaskLater(this.PLUGIN,
+                    () -> this.ENGINE_LIST.get(NAME).clear(), 100L);
         }
     }
     @Override

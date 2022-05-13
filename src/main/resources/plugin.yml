@@ -6,3 +6,6 @@ depend: [JSONConfigAPI]
 softdepend: [PlaceholderAPI]
 authors: [n2k_]
 website: github.com/neros2k/nProps
+commands:
+  props:
+    description: Main command

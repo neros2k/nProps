@@ -11,9 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.List;
-import java.util.Objects;
 public class Engine implements IEngine {
     private final IInteractor INTERACTOR;
     private final Player PLAYER;

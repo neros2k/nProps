@@ -1,5 +1,6 @@
 package n2k_.nprops.core.presenter;
 import n2k_.nprops.base.APresenter;
+import n2k_.nprops.base.IEngine;
 import n2k_.nprops.base.IInteractor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -31,13 +32,24 @@ public class EventPresenter extends APresenter implements Listener {
     @EventHandler
     public void onBlockPlace(@NotNull BlockPlaceEvent EVENT) {
         if(EVENT.isCancelled()) return;
-        super.getInteractor().addBlock(EVENT.getPlayer(), EVENT.getBlock());
+        Location LOCATION = EVENT.getBlock().getLocation();
+        IEngine ENGINE = super.getInteractor().getEngineFromLocation(LOCATION);
+        if(ENGINE.getList().isEmpty()) {
+            EVENT.setCancelled(true);
+        } else {
+            super.getInteractor().addBlock(EVENT.getPlayer(), EVENT.getBlock());
+        }
     }
     @EventHandler
     public void onBlockBreak(@NotNull BlockBreakEvent EVENT) {
         Location LOCATION = EVENT.getBlock().getLocation();
-        if(!EVENT.isCancelled() && super.getInteractor().getEngineFromLocation(LOCATION) != null) {
-            super.getInteractor().removeBlock(EVENT.getPlayer(), EVENT.getBlock());
+        IEngine ENGINE = super.getInteractor().getEngineFromLocation(LOCATION);
+        if(!EVENT.isCancelled() && ENGINE != null) {
+            if(ENGINE.getPLayer() == ENGINE.getPLayer()) {
+                super.getInteractor().removeBlock(EVENT.getPlayer(), EVENT.getBlock());
+            } else {
+                EVENT.setCancelled(true);
+            }
         }
     }
 }

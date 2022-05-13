@@ -95,9 +95,9 @@ public class Interactor implements IInteractor {
     @Override
     public IEngine getEngineFromLocation(Location LOCATION) {
         AtomicReference<IEngine> RETURN_ENGINE = new AtomicReference<>(null);
-        this.ENGINE_LIST.forEach((NAME, ENGINE) -> ENGINE.getList().forEach(ENGINE_LOCATION -> {
-            if(ENGINE_LOCATION == LOCATION) RETURN_ENGINE.set(ENGINE);
-        }));
+        this.ENGINE_LIST.forEach((NAME, ENGINE) -> {
+            if(ENGINE.getList().contains(LOCATION)) RETURN_ENGINE.set(ENGINE);
+        });
         return RETURN_ENGINE.get();
     }
     @Override

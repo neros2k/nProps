@@ -35,8 +35,7 @@ public class EventPresenter extends APresenter implements Listener {
     }
     @EventHandler
     public void onBlockBreak(@NotNull BlockBreakEvent EVENT) {
-        Block BLOCK = EVENT.getBlock();
-        Location LOCATION = BLOCK.getLocation();
+        Location LOCATION = EVENT.getBlock().getLocation();
         if(!EVENT.isCancelled() && super.getInteractor().getEngineFromLocation(LOCATION) != null) {
             super.getInteractor().removeBlock(EVENT.getPlayer(), EVENT.getBlock());
         }

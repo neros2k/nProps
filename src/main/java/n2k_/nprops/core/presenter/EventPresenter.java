@@ -3,7 +3,6 @@ import n2k_.nprops.base.APresenter;
 import n2k_.nprops.base.IEngine;
 import n2k_.nprops.base.IInteractor;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -31,10 +30,10 @@ public class EventPresenter extends APresenter implements Listener {
     }
     @EventHandler
     public void onBlockPlace(@NotNull BlockPlaceEvent EVENT) {
+        IEngine ENGINE = super.getInteractor().getEngine(EVENT.getPlayer());
         if(EVENT.isCancelled()) return;
-        Location LOCATION = EVENT.getBlock().getLocation();
-        IEngine ENGINE = super.getInteractor().getEngineFromLocation(LOCATION);
-        if(ENGINE.getList().isEmpty()) {
+        if(ENGINE != null && ENGINE.getList().size() >= 10) {
+            EVENT.getPlayer().sendMessage("ЭЙ чувачок ОСТАНОВИСЬ!!");
             EVENT.setCancelled(true);
         } else {
             super.getInteractor().addBlock(EVENT.getPlayer(), EVENT.getBlock());

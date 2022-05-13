@@ -56,11 +56,7 @@ public class Interactor implements IInteractor {
         String NAME = PLAYER.getName();
         if(this.ENGINE_LIST.containsKey(NAME)) {
             IEngine ENGINE = this.ENGINE_LIST.get(NAME);
-            if(ENGINE.getList().size() > 10) {
-                ENGINE.getPLayer().sendMessage("ЭЙ чувачок ОСТАНОВИСЬ!!");
-            } else {
-                ENGINE.add(BLOCK.getLocation());
-            }
+            ENGINE.add(BLOCK.getLocation());
         }
     }
     @Override

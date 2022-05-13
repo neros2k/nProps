@@ -24,7 +24,7 @@ public class Engine implements IEngine {
     }
     @Override
     public void start() {
-        this.TICK_TASK = Bukkit.getScheduler().runTaskTimer(this.INTERACTOR.getPlugin(), this::tick, 0L, 1L);
+        this.TICK_TASK = Bukkit.getScheduler().runTaskTimer(this.INTERACTOR.getPlugin(), this::tick, 0L, 5L);
     }
     @Override
     public void stop() {
@@ -37,6 +37,11 @@ public class Engine implements IEngine {
         @Nullable IEngine ENGINE = this.INTERACTOR.getEngineFromLocation(BLOCK.getLocation());
         if(ENGINE == null) return;
         this.PLAYER.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ENGINE.getPLayer().getName()));
+        this.LOCATION_LIST.forEach(LOCATION -> {
+            if(LOCATION.getBlock().getType().isAir()) {
+                this.LOCATION_LIST.remove(LOCATION);
+            }
+        });
     }
     @Override
     public void add(Location LOCATION) {

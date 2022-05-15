@@ -9,3 +9,11 @@ website: github.com/neros2k/nProps
 commands:
   props:
     description: Main command
+permissions:
+  nprops.*:
+    default: op
+    children:
+      - nprops.reload
+      - nprops.clear
+      - nprops.find
+      - nprops.count

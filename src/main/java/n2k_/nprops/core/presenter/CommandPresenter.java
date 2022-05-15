@@ -1,12 +1,14 @@
 package n2k_.nprops.core.presenter;
 import n2k_.nprops.base.APresenter;
 import n2k_.nprops.base.IInteractor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import java.util.List;
 public class CommandPresenter extends APresenter implements CommandExecutor {
     public CommandPresenter(IInteractor INTERACTOR) {
         super(INTERACTOR);
@@ -28,14 +30,15 @@ public class CommandPresenter extends APresenter implements CommandExecutor {
         if(ARGS[0].equals("clear")) {
             if(ARGS.length == 2) {
                 Player PLAYER = this.getPlayerByName(ARGS[1]);
-                super.getInteractor().getEngine(PLAYER).clear();
+                super.getInteractor().clear(PLAYER);
             }
         }
         if(ARGS[0].equals("find")) {
             if(ARGS.length == 2) {
                 Player PLAYER = this.getPlayerByName(ARGS[1]);
+                List<Location> LOCATION_LIST = super.getInteractor().getEngine(PLAYER).getList();
                 StringBuilder BUILDER = new StringBuilder();
-                BUILDER.append("---\n");
+                BUILDER.append("--- (").append(LOCATION_LIST.size()).append(")\n");
                 super.getInteractor().getEngine(PLAYER).getList().forEach(LOCATION ->
                     BUILDER.append("> [").append(LOCATION.getX()).append(", ")
                            .append(LOCATION.getY()).append(", ")

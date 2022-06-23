@@ -8,6 +8,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
@@ -59,6 +61,26 @@ public class Interactor implements IInteractor {
         }
     }
     @Override
+    public void onPlace(@NotNull BlockPlaceEvent EVENT) {
+        IEngine ENGINE = this.getEngine(EVENT.getPlayer());
+        if(ENGINE != null && ENGINE.getList().size() >= 10) {
+            EVENT.setCancelled(true);
+        } else {
+            this.addBlock(EVENT.getPlayer(), EVENT.getBlock());
+        }
+    }
+    @Override
+    public void onBreak(@NotNull BlockBreakEvent EVENT) {
+        Location LOCATION = EVENT.getBlock().getLocation();
+        IEngine ENGINE = this.getEngineFromLocation(LOCATION);
+        if(ENGINE == null) return;
+        if(ENGINE.getPLayer() == ENGINE.getPLayer()) {
+            this.removeBlock(EVENT.getPlayer(), EVENT.getBlock());
+        } else {
+            EVENT.setCancelled(true);
+        }
+    }
+    @Override
     public void addBlock(@NotNull Player PLAYER, Block BLOCK) {
         String NAME = PLAYER.getName();
         if(this.ENGINE_LIST.containsKey(NAME)) {
@@ -72,7 +94,7 @@ public class Interactor implements IInteractor {
         if(this.ENGINE_LIST.containsKey(NAME)) {
             IEngine ENGINE = this.ENGINE_LIST.get(NAME);
             if(ENGINE.getList().isEmpty()) {
-                Bukkit.getLogger().warning("[!] Line: 78 | Removing block from empty list");
+                Bukkit.getLogger().warning("["+PLAYER.getName()+";"+ BLOCK.getLocation()+"] Removing block from empty list");
             } else {
                 ENGINE.remove(BLOCK.getLocation());
             }

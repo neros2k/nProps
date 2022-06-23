@@ -30,26 +30,13 @@ public class EventPresenter extends APresenter implements Listener {
     }
     @EventHandler
     public void onBlockPlace(@NotNull BlockPlaceEvent EVENT) {
-        IEngine ENGINE = super.getInteractor().getEngine(EVENT.getPlayer());
         if(EVENT.isCancelled()) return;
-        if(ENGINE != null && ENGINE.getList().size() >= 10) {
-            EVENT.getPlayer().sendMessage("ЭЙ чувачок ОСТАНОВИСЬ!!");
-            EVENT.setCancelled(true);
-        } else {
-            super.getInteractor().addBlock(EVENT.getPlayer(), EVENT.getBlock());
-        }
+        super.getInteractor().onPlace(EVENT);
     }
     @EventHandler
     public void onBlockBreak(@NotNull BlockBreakEvent EVENT) {
-        Location LOCATION = EVENT.getBlock().getLocation();
-        IEngine ENGINE = super.getInteractor().getEngineFromLocation(LOCATION);
-        if(!EVENT.isCancelled() && ENGINE != null) {
-            if(ENGINE.getPLayer() == ENGINE.getPLayer()) {
-                super.getInteractor().removeBlock(EVENT.getPlayer(), EVENT.getBlock());
-            } else {
-                EVENT.setCancelled(true);
-            }
-        }
+        if(EVENT.isCancelled()) return;
+        super.getInteractor().onBreak(EVENT);
     }
 }
 

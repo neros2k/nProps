@@ -49,6 +49,14 @@
   </build>
   <repositories>
     <repository>
+      <id>JSONConfigAPI-mvn-repo</id>
+      <url>https://raw.github.com/neros2k/JSONConfigAPI/mvn-repo/</url>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
+    <repository>
       <id>spigotmc-repo</id>
       <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
@@ -63,6 +71,11 @@
       <artifactId>spigot-api</artifactId>
       <version>1.17-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>n2k_.jcapi</groupId>
+      <artifactId>JSONConfigAPI</artifactId>
+      <version>1.0.1</version>
     </dependency>
     <dependency>
       <groupId>org.jetbrains</groupId>

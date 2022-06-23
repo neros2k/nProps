@@ -95,9 +95,7 @@ public class Interactor implements IInteractor {
             IEngine ENGINE = this.ENGINE_LIST.get(NAME);
             if(ENGINE.getList().isEmpty()) {
                 Bukkit.getLogger().warning("["+PLAYER.getName()+";"+ BLOCK.getLocation()+"] Removing block from empty list");
-            } else {
-                ENGINE.remove(BLOCK.getLocation());
-            }
+            } else ENGINE.remove(BLOCK.getLocation());
         }
     }
     @Override

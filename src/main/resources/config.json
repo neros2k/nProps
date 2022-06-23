@@ -1,1 +1,9 @@
-{}
+{
+  "ENABLE_ACTION_BAR": true,
+  "ACTION_BAR": "{name}",
+  "MESSAGES": {
+    "FIND_MESSAGE_TITLE": "--- {size} --- \\n",
+    "FIND_MESSAGE_ELEMENT": "[{x}, {y}, {z},]: {type};",
+    "FIND_MESSAGE_FOOTER": "--- {player} ---"
+  }
+}
